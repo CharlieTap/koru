@@ -21,7 +21,9 @@ run-release: build-release
 
 help:
 	@echo "Available targets:"
-	@echo "  build         Build the Docker image"
-	@echo "  build-verbose Build the Docker image with verbose output"
+	@echo "  build         Build the Docker image in debug mode"
+	@echo "  build-release Build the Docker image in release mode"
+	@echo "  build-verbose Build the Docker image in debug mode with verbose output"
+	@echo "  debug         Build (if necessary) and run the container attaching a bash shell"
 	@echo "  run           Build (if necessary) and run the Docker container"
 	@echo "  help          Display this help message"
