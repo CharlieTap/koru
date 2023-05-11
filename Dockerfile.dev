@@ -16,7 +16,17 @@ RUN \
     apt-get update && \
     apt-get install -y \
     build-essential \
-    liburing-dev
+    liburing-dev \
+    openssh-server \
+    sudo
+
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1001 test
+
+RUN echo 'test:test' | chpasswd
+
+RUN service ssh start
+
+EXPOSE 22
 
 #CMD ["gradle", "-t", "runDebugExecutableNative", "--debug"]
-CMD ["/bin/bash"]
+CMD ["/usr/sbin/sshd","-D"]

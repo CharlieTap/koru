@@ -19,7 +19,7 @@ debug: build
 run: build
 	docker run --rm -ti --platform linux/amd64 $(IMAGE_NAME)
 run-dev: build-dev
-	docker run --rm -ti --platform linux/amd64 -v "$(CURDIR):/app" $(IMAGE_NAME)-dev
+	docker run --rm -ti --platform linux/amd64 -v "$(CURDIR):/app" -p 22:22 $(IMAGE_NAME)-dev
 run-release: build-release
 	docker run --rm -ti --platform linux/amd64 $(IMAGE_NAME)
 
