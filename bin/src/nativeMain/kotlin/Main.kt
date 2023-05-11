@@ -1,20 +1,13 @@
+import kotlinx.cinterop.*
+import platform.posix.*
+import kotlinx.cinterop.nativeHeap.alloc
 
-import kotlinx.cinterop.staticCFunction
-import platform.posix.SIGINT
-import platform.posix.SIGTERM
-import platform.posix.signal
+
 
 fun main() {
-    setupSignalHandler()
-    println("hello11")
-}
+    val fileName = "test.txt"
+    val bufferSize = 4096L
 
-fun setupSignalHandler() {
-    val handler = staticCFunction { _: Int ->
-        println("Gracefully shutting down")
+//    val ring = io_uring()
 
-    }
-
-    signal(SIGTERM, handler)
-    signal(SIGINT, handler)
 }

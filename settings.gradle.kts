@@ -18,5 +18,3 @@ dependencyResolutionManagement {
 }
 
 include(":bin")
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

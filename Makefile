@@ -7,15 +7,19 @@ BUILD_ARG_BINARY=--build-arg BINARY=$(BINARY_NAME)
 .PHONY: build build-release build-verbose debug run help
 
 build:
-	docker build $(BUILD_ARG_BINARY) -t $(IMAGE_NAME) .
+	docker build --platform linux/amd64 $(BUILD_ARG_BINARY) -t $(IMAGE_NAME) .
+build-dev:
+	docker build --platform linux/amd64 -t $(IMAGE_NAME)-dev -f Dockerfile.dev .
 build-release:
-	docker build $(BUILD_ARG_BINARY) --build-arg MODE=release -t $(IMAGE_NAME) .
+	docker build --platform linux/amd64 $(BUILD_ARG_BINARY) --build-arg MODE=release -t $(IMAGE_NAME) .
 build-verbose:
-	docker build $(BUILD_ARG_BINARY) -t $(IMAGE_NAME) --progress=plain .
+	docker build --platform linux/amd64 $(BUILD_ARG_BINARY) -t $(IMAGE_NAME) --progress=plain .
 debug: build
 	docker run --rm -ti --platform linux/amd64 $(IMAGE_NAME) /bin/bash
 run: build
 	docker run --rm -ti --platform linux/amd64 $(IMAGE_NAME)
+run-dev: build-dev
+	docker run --rm -ti --platform linux/amd64 -v "$(CURDIR):/app" $(IMAGE_NAME)-dev
 run-release: build-release
 	docker run --rm -ti --platform linux/amd64 $(IMAGE_NAME)
 

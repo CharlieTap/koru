@@ -3,3 +3,6 @@
 **/build/
 
 Dockerfile
+Dockerfile.dev
+docker-compose.yml
+Makefile

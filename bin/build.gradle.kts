@@ -27,18 +27,27 @@ kotlin {
     }
 
     nativeTarget.apply {
+        compilations.getByName("main") {
+            cinterops {
+                val liburing by creating   {
+                    defFile(project.file("src/nativeInterop/cinterop/liburing.def"))
+                    compilerOpts("-I/path")
+                    includeDirs.allHeaders("path")
+                }
+            }
+        }
         binaries {
             executable {
                 baseName = "koru"
                 entryPoint = "main"
+                linkerOpts = mutableListOf("-L/usr/lib/x86_64-linux-gnu", "-luring")
             }
         }
     }
+
     sourceSets {
         val nativeMain by getting {
-            dependencies {
-
-            }
+            dependencies {}
         }
         val nativeTest by getting
     }
