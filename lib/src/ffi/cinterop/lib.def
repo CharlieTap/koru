@@ -1,0 +1,36 @@
+headers = unistd.h fcntl.h sys/stat.h sys/statvfs.h
+---
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <sys/statvfs.h>
+#include <fcntl.h>
+#include <unistd.h>
+
+unsigned long getBlockSize(const char* path) {
+    struct statvfs buf;
+    if (statvfs(path, &buf) != 0) {
+        return 0; // Handle error
+    }
+    return buf.f_bsize;
+}
+
+int getFileSize(const char* path, off_t* size) {
+    struct stat buf;
+    if (stat(path, &buf) != 0) {
+        return -1; // Handle error
+    }
+    *size = buf.st_size;
+    return 0;
+}
+
+void* aligned_alloc(size_t alignment, size_t size) {
+    void* ptr;
+    if (posix_memalign(&ptr, alignment, size) != 0) {
+        return NULL;
+    }
+    return ptr;
+}
+
+int openFileAt(int dirfd, const char *pathname, int flags, mode_t mode) {
+    return openat(dirfd, pathname, flags, mode);
+}

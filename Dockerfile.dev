@@ -1,0 +1,32 @@
+FROM  --platform=linux/amd64 gradle:8.1.1-jdk11
+#Cannot use alpine as the kotlin native toolchain uses gcc in places :(
+#Cannot use jdk 17 as fails to spawn helper
+
+# For some reason konan seems to wipe the $HOME/.konan folder between builds
+# By defining this env variable konan will write cache out to a folder we are already using for caching
+ENV KONAN_DATA_DIR=/home/gradle/.gradle
+
+# /home/gradle/.gradle is already declared a volume in the base image
+#VOLUME /app/bin/build
+
+WORKDIR /app
+
+RUN \
+    --mount=type=cache,target=/var/cache/apt \
+    apt-get update && \
+    apt-get install -y \
+    build-essential \
+    liburing-dev \
+    openssh-server \
+    sudo
+
+RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1001 test
+
+RUN echo 'test:test' | chpasswd
+
+RUN service ssh start
+
+EXPOSE 22
+
+#CMD ["gradle", "-t", "runDebugExecutableNative", "--debug"]
+CMD ["/usr/sbin/sshd","-D"]

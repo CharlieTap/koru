@@ -1,0 +1,6 @@
+package = liburing
+headers = liburing.h
+noStringConversion = io_uring_prep_openat io_uring_prep_openat_direct io_uring_prep_openat2 io_uring_prep_openat2_direct
+
+compilerOpts.linux = -I/usr/include -I/usr/include/x86_64-linux-gnu
+linkerOpts.linux = -L/usr/lib/x86_64-linux-gnu -luring
