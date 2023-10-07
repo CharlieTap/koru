@@ -23,9 +23,6 @@ import ring.submitRing
 import kotlin.time.TimeSource
 import kotlin.time.measureTime
 
-
-fun read(fileDescriptor: FileDescriptor, buffer: Buffer, bytesToRead: Int): Int 
-
 fun readBlocking(buffer: Buffer) = memScoped {
     val test = sysOpen("/workspace/koru/test3.txt",
         FileDescriptorFlags.Builder().build(),
@@ -42,7 +39,6 @@ fun main() = memScoped {
     val blockingDuration = measureTime {
         readBlocking(buffer)
     }
-
 
     val setupTimemark = TimeSource.Monotonic.markNow()
     val ring = when(val initResult = initRing(RingEntries(32u))) {
@@ -65,6 +61,7 @@ fun main() = memScoped {
     val sqePrepTimemark = TimeSource.Monotonic.markNow()
 
     val openSqe = getSubmissionQueueEntry(ring)!!
+
     prepareOpenAtDirect(
         openSqe,
         FileDescriptor.AT_FDCWD,
